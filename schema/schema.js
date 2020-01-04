@@ -1,5 +1,5 @@
 const graphql = require("graphql");
-//const _ = require('loadash');
+const _ = require('lodash')
 
 const {
   GraphQLObjectType,
@@ -14,9 +14,9 @@ const {
 // for the instacne defining consts
 
 const books = [
-  { name: "the name of the wind", genre: "Fantasy", id: "1" },
-  { name: "The long earth", genre: "Fantasy", id: "2" },
-  { name: "Rich dad and poor dad", genre: "Sci-Fi", id: "3" }
+  { name: "the name of the wind", genre: "Fantasy", id: "1", authorId: 2 },
+  { name: "The long earth", genre: "Fantasy", id: "2", authorId: 2 },
+  { name: "Rich dad and poor dad", genre: "Sci-Fi", id: "3", authorId: 1 }
 ];
 
 const authors = [
@@ -42,7 +42,13 @@ const BookType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    genre: { type: GraphQLString }
+    genre: { type: GraphQLString },
+    author: { 
+        type: AuthorType,
+        resolve(parent, args) {
+          return _.find(authors, { id: parent.authorId })
+        }
+    }, 
   })
 });
 
@@ -63,14 +69,14 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         // code to get the data from the database or other resoureces
-        return books[0];
+        return _.find(books, { id: args.id })
       }
     },
     author: {
       type: AuthorType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return authors[0];
+        return _.find(authors, { id: args.id })
       }
     }
   }
