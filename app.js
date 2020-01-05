@@ -2,6 +2,7 @@ const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const app = express();
 const schema = require("./schema/schema");
+const moongoose = require("moongoose");
 
 // mount the express graphql as route handler
 // use get or post to show it in the graphiql in the browser
