@@ -12,7 +12,7 @@ const {
 
 // defining the book object with the expected fieids and its type
 
-// for the instacne defining consts
+// for the instance defining consts
 
 const books = [
   { name: "the name of the wind", genre: "Fantasy", id: "1", authorId: 2 },
