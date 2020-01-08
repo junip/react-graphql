@@ -8,16 +8,18 @@ const mongoose = require("mongoose");
 // use get or post to show it in the graphiql in the browser
 
 let connectionUrl =
-  "mongodb+srv://mongotest:password@cluster0-nqahq.mongodb.net/test?retryWrites=true&w=majority";
+  "mongodb+srv://mongotest:junip123@cluster0-nqahq.mongodb.net/test?retryWrites=true&w=majority";
+mongoose
+  .connect(connectionUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(
+    () => {
+      console.log("connection successful");
+    },
+    err => {
+      console.log("--ERROR IN THE CONECTION-", err);
+    }
+  );
 
-mongoose.connect(connectionUrl).then(
-  () => {
-    console.log("DB CONNECTED ");
-  },
-  err => {
-    console.log("Connection Unsuccessfull");
-  }
-);
 /*
  * without the schema in the graphiql browser it will show error that the graphql middle ware
  * needs the graphql middleware.
