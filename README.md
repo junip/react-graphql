@@ -11,3 +11,8 @@ TODO
 - [ ] try connection with postgres
 - [ ] interaction of database with graphql
 
+
+# Notes
+
+ First make your monogodb cluster accessible from any ip adress. then starte connecting it.
+
