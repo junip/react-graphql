@@ -18,10 +18,15 @@ const BookType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+    authorId: { type: GraphQLString },
     author: {
       type: AuthorType,
       resolve(parent, args) {
-        return _.find(authors, { id: parent.authorId });
+        let response;
+        return Author.find({ _id: parent.authorId }).then(res => {
+          response = res[0];
+          return response;
+        });
       }
     }
   })
@@ -36,7 +41,9 @@ const AuthorType = new GraphQLObjectType({
     books: {
       type: BookType,
       resolve(parent, args) {
-        return _.find(books, { authorId: parent.id });
+        return Book.find({authorId: parent.id}).then((response) => {
+          return response[0]
+        })
       }
     }
   })
@@ -59,12 +66,12 @@ const Mutation = new GraphQLObjectType({
         return author.save();
       }
     },
-    addBooks: {
+    addBook: {
       type: BookType,
       args: {
         name: { type: GraphQLString },
         genre: { type: GraphQLString },
-        authorId: {type: GraphQLString }
+        authorId: { type: GraphQLString }
       },
       resolve(parent, args) {
         let book = new Book({
@@ -86,26 +93,27 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         // code to get the data from the database or other resoureces
-        return _.find(books, { id: args.id });
+        return Book.findById(args.id);
       }
     },
     author: {
       type: AuthorType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(authors, { id: args.id });
+        console.log("Argument", args.id);
+        return Author.find(args.id);
       }
     },
     books: {
       type: GraphQLList(BookType),
       resolve(parent, args) {
-        return books;
+        return Book.find({});
       }
     },
     authors: {
       type: GraphQLList(AuthorType),
       resolve(parent, args) {
-        return authors;
+        return Author.find({});
       }
     }
   }
